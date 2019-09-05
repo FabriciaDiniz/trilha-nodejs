@@ -28,4 +28,34 @@ module.exports = (app) => {
         ))
         .catch(erro => console.log(erro));
     });
+
+    app.get('/livros/form', function(req, resp) {
+        resp.marko(require('../views/livros/form/form.marko'));
+    });
+
+    app.post('/livros', function(req, resp) {
+        const livroDao = new LivroDao(db);
+        livroDao.adiciona(req.body)
+        .then(resp.redirect('/livros'))
+        .catch(erro => console.log(erro));
+    });
+
+    app.get('/livros/${id}', function (req, resp, id) {
+        const livroDao = new LivroDao(db);
+        livroDao.buscaPorId(id)
+        .then(livro => resp.marko(
+            require('../views/livros/detalhe.marko'),
+            {
+                livro: livro
+            }
+        ))
+        .catch(erro => console.log(erro));
+    });
+
+    app.get('/livros/${id}/delete', function (req, resp, id) {
+        const livroDao = new LivroDao(db);
+        livroDao.remove(id)
+        .then(resp.redirect('/livros'))
+        .catch(erro => console.log(erro));
+    });
 }
