@@ -94,8 +94,8 @@ class LivroDao {
         return new Promise((resolve, reject) => {
             this._db.run(
                 `
-                    DELETE FROM LIVROS 
-                    WHERE livro.id=?
+                    DELETE FROM livros 
+                    WHERE id=?
                 `,
                 [id],
                 (erro) => {
