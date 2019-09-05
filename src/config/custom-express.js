@@ -26,4 +26,19 @@ app.use(methodOverride(function (req, res) {
 const rotas = require('../app/rotas/rotas');
 rotas(app);
 
+//middleware para erro 404
+app.use(function (req, resp, next) {
+    return resp.status(404).marko(
+        require('../app/views/base/erros/404.marko')
+    );
+});
+
+//middleware para erro 500
+//precisa passar as 4 variáveis pro express diferenciar a parte do tratamento de erros
+app.use(function (erro, req, resp, next) {
+    return resp.status(500).marko(
+        require('../app/views/base/erros/500.marko')
+    );
+});
+
 module.exports = app;
