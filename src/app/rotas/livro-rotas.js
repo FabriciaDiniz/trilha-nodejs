@@ -8,8 +8,19 @@ const db = require('../../config/database');
 const LivroControlador = require('../controladores/livro-controlador');
 const livroControlador = new LivroControlador();
 
+const BaseControlador = require('../controladores/base-controlador');
+
 module.exports = (app) => {
     const rotasLivro = LivroControlador.rotas();
+
+    //middleware de autenticação
+    app.use(rotasLivro.autenticadas, function(req, resp, next) {
+        if (req.isAuthenticated()) {
+            next();
+        } else {
+            resp.redirect(BaseControlador.rotas().login);
+        }
+    });
 
     app.get(rotasLivro.lista, 
         livroControlador.lista());
